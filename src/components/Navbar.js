@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   // State to manage the navbar's visibility
@@ -10,26 +11,41 @@ const Navbar = () => {
     setNav(!nav);
   };
 
+  const handleHome = () => {
+    console.log("Home");
+    toast.warn("Home clicked");
+  };
+  const handleCompany = () => {
+    toast.warn("Company clicked");
+  };
+  const handleResources = () => {
+    toast.warn("Resources clicked");
+  };
+  const handleAbout = () => {
+    toast.warn("About clicked");
+  };
+  const handleContact = () => {
+    toast.warn("Contact clicked");
+  };
+
   // Array containing navigation items
   const navItems = [
-    { id: 1, text: "Home" },
-    { id: 2, text: "Company" },
-    { id: 3, text: "Resources" },
-    { id: 4, text: "About" },
-    { id: 5, text: "Contact" }
+    { id: 1, text: "Home", onClick: handleHome },
+    { id: 2, text: "Company", onClick: handleCompany },
+    { id: 3, text: "Resources", onClick: handleResources },
+    { id: 4, text: "About", onClick: handleAbout },
+    { id: 5, text: "Contact", onClick: handleContact }
   ];
 
   return (
-    <div className="bg-black flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
-      {/* Logo */}
+    <div className="bg-black flex justify-between items-center h-24 max-w-full mx-auto px-4 text-white">
       <h1 className="w-full text-3xl font-bold text-[#00df9a]">REACT.</h1>
-
-      {/* Desktop Navigation */}
       <ul className="hidden md:flex">
         {navItems.map((item) => (
           <li
             key={item.id}
             className="p-4 hover:bg-[#00df9a] rounded-xl m-2 cursor-pointer duration-300 hover:text-black"
+            onClick={item.onClick}
           >
             {item.text}
           </li>
@@ -54,12 +70,13 @@ const Navbar = () => {
 
         {/* Mobile Navigation Items */}
         {navItems.map((item) => (
-          <li
+          <div
             key={item.id}
             className="p-4 border-b rounded-xl hover:bg-[#00df9a] duration-300 hover:text-black cursor-pointer border-gray-600"
+            onClick={item.onClick}
           >
             {item.text}
-          </li>
+          </div>
         ))}
       </ul>
     </div>
