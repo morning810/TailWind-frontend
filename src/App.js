@@ -1,23 +1,54 @@
-import React from "react";
+import { WagmiConfig, createConfig, configureChains, mainnet } from "wagmi";
 
-import Navbar from "./components/Navbar";
-import { toast } from "react-toastify";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+
+// Configure chains & providers with the Alchemy provider.
+// Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
+  [alchemyProvider({ apiKey: "yourAlchemyApiKey" }), publicProvider()]
+);
+
+// Set up wagmi config
+const config = createConfig({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: {
+        appName: "wagmi"
+      }
+    }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        projectId: "..."
+      }
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true
+      }
+    })
+  ],
+  publicClient,
+  webSocketPublicClient
+});
+
+// Pass config to React Context Provider
 function App() {
-  const toastTest = () => {
-    console.log(" testing toast");
-    toast.warn("This is a toast message");
-  };
   return (
-    <div className="App">
-      <Navbar />
-      <button
-        className="btn btn-accent btn-outline bg-slate-800 rounded-full w-128"
-        onClick={toastTest}
-      >
-        Three
-      </button>
-    </div>
+    <WagmiConfig config={config}>
+      <Profile />
+    </WagmiConfig>
   );
 }
-
-export default App;

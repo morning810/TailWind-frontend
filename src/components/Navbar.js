@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+import Home from "../pages/Home";
 
 const Navbar = () => {
   // State to manage the navbar's visibility
   const [nav, setNav] = useState(false);
-
+  const navigate = useNavigate();
   // Toggle function to handle the navbar's display
   const handleNav = () => {
     setNav(!nav);
@@ -13,6 +16,7 @@ const Navbar = () => {
 
   const handleHome = () => {
     console.log("Home");
+    navigate("/Home");
     toast.warn("Home clicked");
   };
   const handleCompany = () => {
